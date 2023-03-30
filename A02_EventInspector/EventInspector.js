@@ -14,6 +14,9 @@ var EventInspector;
         div0.addEventListener('keyup', logInfo);
         div1.addEventListener('click', logInfo);
         div1.addEventListener('keyup', logInfo);
+        document.addEventListener('hello', output);
+        let button = document.getElementById('button');
+        button.addEventListener('click', customevent);
     }
     //_event=parameter
     function setInfoBox(_event) {
@@ -37,11 +40,12 @@ var EventInspector;
         console.log(_event);
     }
     //mit document.getElementbyID durchsuche ich Element nach meinem Button mit der id 'button'
-    let button = document.getElementById('button');
-    button.addEventListener('click', customevent);
     function customevent(_event) {
-        const customeventnew = new CustomEvent('hello'); //CustomEvent ist eine Funktion die mir eine Instanz eines Objekts vom Typ:Customevent erstellt(sagt mir z.B. dass ich Zootiere habe)
+        const customeventnew = new CustomEvent('hello'); //CustomEvent(custom=(maßgeschneidert) ist eine Funktion die mir eine Instanz eines Objekts vom Typ:Customevent erstellt(sagt mir z.B. dass ich Zootiere habe)
         dispatchEvent(customeventnew);
+    }
+    function output(_event) {
+        console.log(_event);
     }
 })(EventInspector || (EventInspector = {}));
 //# sourceMappingURL=EventInspector.js.map
