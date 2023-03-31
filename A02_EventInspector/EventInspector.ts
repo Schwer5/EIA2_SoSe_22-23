@@ -50,7 +50,7 @@ namespace EventInspector {
         dispatchEvent(customeventnew);
     }
 
-    function output(_event: CustomEvent) {//funktioniert auch nicht wenn man nur 'Event' nimmt
+    function output(_event: Event) {//funktioniert auch nicht wenn man nur 'Event' nimmt
         console.log(_event);
     }
 
