@@ -16,9 +16,9 @@ namespace EventInspector {
         div1.addEventListener('click', logInfo);
         div1.addEventListener('keyup', logInfo);
         document.addEventListener('hello', output);
-        let button: HTMLButtonElement = <HTMLButtonElement>document.getElementById('button');
-        button.addEventListener('click', customevent);
     }
+    let button: HTMLButtonElement = <HTMLButtonElement>document.getElementById('button');
+    button.addEventListener('click', customevent);
 
     //_event=parameter
     function setInfoBox(_event: MouseEvent) {
@@ -46,11 +46,11 @@ namespace EventInspector {
 
 
     function customevent(_event: MouseEvent) {
-        const customeventnew = new CustomEvent('hello')//CustomEvent(custom=(maßgeschneidert) ist eine Funktion die mir eine Instanz eines Objekts vom Typ:Customevent erstellt(sagt mir z.B. dass ich Zootiere habe)
-        dispatchEvent(customeventnew);
+        const customeventnew = new CustomEvent('hello', {bubbles: true, detail: {}})//CustomEvent(custom=(maßgeschneidert) ist eine Funktion die mir eine Instanz eines Objekts vom Typ:Customevent erstellt(sagt mir z.B. dass ich Zootiere habe)
+        button.dispatchEvent(customeventnew);
     }
 
-    function output(_event: Event) {//funktioniert auch nicht wenn man nur 'Event' nimmt
+    function output(_event: Event) {
         console.log(_event);
     }
 
