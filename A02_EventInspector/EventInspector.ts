@@ -1,5 +1,12 @@
 namespace EventInspector {
-
+ /*
+      Aufgabe: <Aufgabe 02 EventInspector>
+      Name:<Pia Schwer>
+      Matrikel: <272266>
+      Datum: <01.04.23>
+      Zusammenarbeit mit Theresa Hauser, Marie Eckl
+      Quellen: Stack Overflow, Developer Mozilla, L02 Jirka
+      */
     window.addEventListener('load', handleLoad);
 
 
@@ -17,7 +24,7 @@ namespace EventInspector {
         div1.addEventListener('keyup', logInfo);
         let button: HTMLButtonElement = <HTMLButtonElement>document.getElementById('button');
         button.addEventListener('click', customevent);
-        document.addEventListener('hello', output);
+        document.addEventListener('° reingeguckt :)', output);
     }
 
 
@@ -48,12 +55,12 @@ namespace EventInspector {
 
     function customevent(_event: MouseEvent) {
         let button: HTMLButtonElement = <HTMLButtonElement>document.getElementById('button');
-        let customeventnew = new CustomEvent("hello", { bubbles: true })//CustomEvent(custom=(maßgeschneidert) ist eine Funktion die mir eine Instanz eines Objekts vom Typ:Customevent erstellt(sagt mir z.B. dass ich Zootiere habe)
+        let customeventnew = new CustomEvent("° reingeguckt :)", { bubbles: true })//CustomEvent(custom=(maßgeschneidert) ist eine Funktion die mir eine Instanz eines Objekts vom Typ:Customevent erstellt(sagt mir z.B. dass ich Zootiere habe)
         button.dispatchEvent(customeventnew);
     }
 
     function output(_event: Event) {
-        console.log('hello');
+        console.log('° reingeguckt :)');
 
     }
 
