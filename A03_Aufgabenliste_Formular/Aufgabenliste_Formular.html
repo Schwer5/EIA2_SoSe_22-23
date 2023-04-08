@@ -3,28 +3,45 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <link rel="stylesheet" href="Aufgabenliste_Formular.css">
     <script src="Aufgabenliste_Formular.js"></script>
 </head>
-<h1>WG ToDo-Liste</h1>
-<div id="list">
-    <div id="addtask"><span id="add"><i class="fas fa-plus-circle"></i></span>
-        <input type="text" placeholder="Aufgabe hinzufügen">
-        <input type="datetime-local" placeholder="Uhrzeit">
-        <br>
-        <select name="Name" id="selechtname"></select>
-    </div>
-    <div id="task">
-        <input type="radio"><input type="radio">
-    </div>
-</div>
 
 <body>
+    <main>
+        <h1>ToDo App</h1>
+        <p id="counter">3 in total</p>
 
+        <div class="inputtask">
+            <button id="addtask"><i class="fas fa-plus-circle"></i></button>
+            <input type="text" id="inputTodo" placeholder="Aufgabe hinzufügen...">
+            <input type="text" id="inputComment" placeholder="Kommentar...">
+            <select name="Name" id="selectname">
+                <option value="" selected>Name</option>
+                <option value="Hanna">Hanna</option>
+                <option value="Selina">Selina</option>
+                <option value="Lena">Lena</option>
+            </select>
+            <input type="datetime-local" name="date" id="datetime">
+        </div>
+        <div class="inputtask">
+            <input type="radio" id="edit" name="edit" value="HTML">
+            <label for="edit">In Bearbeitung</label><br>
+            <input type="text" id="inputTodo" placeholder="Spülmaschine ausräumen">
+            <button id="deletetask"><i class="fas fa-trash"></i></button>
+            <input type="text" id="inputComment" placeholder="Klarspüler bitte auch nachfüllen">
+            <select name="Name" id="selectname">
+                <option value="" selected>Hanna</option>
+            </select>
+
+            <input type="datetime-local" name="date" id="datetime">
+        </div>
+
+    </main>
 </body>
 
 </html>
