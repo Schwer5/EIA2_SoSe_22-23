@@ -47,14 +47,14 @@ main {
     border: none;
     width: 30%;
     height: 34px;
-    margin-left: 35px;
+    margin-left: 15px;
 }
 
 #datetime{
     font-size: 20px;
     padding-left: 30px;
     border: none;
-    width: 40%;
+    width: 50%;
 }
 
 #addtask {
