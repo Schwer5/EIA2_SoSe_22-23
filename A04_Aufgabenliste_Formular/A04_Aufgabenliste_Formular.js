@@ -1,19 +1,19 @@
 "use strict";
 var A04_Aufgabenliste_Formular;
 (function (A04_Aufgabenliste_Formular) {
-    let data = [
-        { id: 1, title: "Spülmaschine ausräumen", comment: "Klarspüler auffüllen", name: "Selina", date: "16.04.23, 12:30", status: true },
-        { id: 2, title: "Keller aufräumen", comment: "Mausefalle stellen", name: "Lea", date: "16.04.23, 19:30", status: true },
-        { id: 3, title: "Flur fegen", comment: "jeden Stock", name: "Hanna", date: "16.04.23, 12:30", status: true },
-        { id: 4, title: "Keller aufräumen", comment: "Mausefalle stellen", name: "Selina", date: "16.04.23, 19:30", status: true },
-        { id: 5, title: "Müll rausbringen", comment: "Biomüll auf den Kompost", name: "Lea", date: "13.04.23, 12:30", status: true },
-        { id: 6, title: "Kblabla", comment: "blablabla", name: "Hanna", date: "13.04.23, 19:30", status: true },
-    ];
+    /*
+     Aufgabe: <Aufgabe 03 Aufgabenliste_Formular>
+     Name:<Pia Schwer>
+     Matrikel: <272266>
+     Datum: <08.04.23>
+     Zusammenarbeit mit Theresa Hauser, Marie Eckl
+     Quellen: Stack Overflow, Developer Mozilla,Github Jirka, Vorherige Aufgabe(n) aus EIA1
+     */
     window.addEventListener('load', handleLoad);
     function handleLoad() {
         let addtask = document.querySelector('#addtask');
         addtask.addEventListener('click', logaddtask);
-        console.log(data);
+        console.log(A04_Aufgabenliste_Formular.data);
         loaddata();
     }
     function logaddtask() {
@@ -26,7 +26,7 @@ var A04_Aufgabenliste_Formular;
         const datetime = document.querySelector('#datetime');
         const dateValue = datetime.value;
         let newid = 1;
-        while (-1 != data.findIndex(item => item.id === newid)) {
+        while (-1 != A04_Aufgabenliste_Formular.data.findIndex(item => item.id === newid)) {
             newid = newid + 1;
         }
         const newItem = {
@@ -37,7 +37,7 @@ var A04_Aufgabenliste_Formular;
             date: dateValue,
             status: false,
         };
-        data.push(newItem);
+        A04_Aufgabenliste_Formular.data.push(newItem);
         createtask(newItem);
         inputTodo.value = '';
         inputComment.value = '';
@@ -69,13 +69,13 @@ var A04_Aufgabenliste_Formular;
         container?.appendChild(newDiv);
     }
     function loaddata() {
-        data.forEach(function (item) {
+        A04_Aufgabenliste_Formular.data.forEach(function (item) {
             createtask(item);
         });
     }
     function deletetask(id) {
-        const index = data.findIndex(item => item.id === id);
-        data.splice(index, 1);
+        const index = A04_Aufgabenliste_Formular.data.findIndex(item => item.id === id);
+        A04_Aufgabenliste_Formular.data.splice(index, 1);
     }
     function deletetaskdom(event) {
         const target = event.target;
