@@ -1,12 +1,5 @@
 namespace A04_Aufgabenliste_Formular {
-    /*
-     Aufgabe: <Aufgabe 03 Aufgabenliste_Formular>
-     Name:<Pia Schwer>
-     Matrikel: <272266>
-     Datum: <08.04.23>
-     Zusammenarbeit mit Theresa Hauser, Marie Eckl
-     Quellen: Stack Overflow, Developer Mozilla,Github Jirka, Vorherige Aufgabe(n) aus EIA1
-     */
+
     export interface Item {
         id: number;
         title: string;
