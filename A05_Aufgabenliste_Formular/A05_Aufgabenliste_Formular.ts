@@ -1,3 +1,4 @@
+
 namespace A04_Aufgabenliste_Formular {
     /*
      Aufgabe: <Aufgabe 04 Aufgabenliste_Formular>
@@ -31,7 +32,7 @@ namespace A04_Aufgabenliste_Formular {
         const dateValue = datetime.value;
 
         let newid = 1
-        while (-1 != data.findIndex(item => item.id === newid)) {
+        while (-1 != data.findIndex(function(item){return item.id===newid})) {
             newid = newid + 1
         }
         const newItem: Item = {
@@ -71,14 +72,14 @@ namespace A04_Aufgabenliste_Formular {
 
         const deleteButton = newDiv.querySelector('#deletetask');
         if (deleteButton) {
-            deleteButton.addEventListener('click', event => {
+            deleteButton.addEventListener('click', function (event) {
                 deletetaskdom(event);
                 deletetask(item.id);
             });
         }
 
         const container = document.querySelector('#task-container');
-        container?.appendChild(newDiv);
+        container && container.appendChild(newDiv);
     }
 
 
@@ -90,14 +91,14 @@ namespace A04_Aufgabenliste_Formular {
 
 
     function deletetask(id: number): void {
-        const index = data.findIndex(item => item.id === id);
+        const index = data.findIndex(function (item){return item.id===id});
         data.splice(index, 1);
     }
 
     function deletetaskdom(event: Event): void {
         const target = event.target as HTMLElement;
         const divToDelete = target.closest('div');
-        divToDelete?.remove();
+        divToDelete && divToDelete.remove();
     }
 
 }
