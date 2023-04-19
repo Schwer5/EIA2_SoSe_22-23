@@ -20,5 +20,10 @@ var randompoem;
         return verse;
     }
     ;
+    document.querySelector("#pressbutton")?.addEventListener("click", sendMessage);
+    function sendMessage() {
+        let send = document.querySelector("#text");
+        send.innerHTML = 'nadu';
+    }
 })(randompoem || (randompoem = {}));
 //# sourceMappingURL=randompoem.js.map

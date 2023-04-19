@@ -27,6 +27,13 @@ function getVerse(subject: string[], verb: string[], object: string[]): string {
 
 };
 
+document.querySelector("#pressbutton")?.addEventListener("click",sendMessage);
+
+function sendMessage(){
+    let send = document.querySelector("#text") as HTMLHeadingElement;
+    send.innerHTML= 'nadu';
+}
+
 
 
 
