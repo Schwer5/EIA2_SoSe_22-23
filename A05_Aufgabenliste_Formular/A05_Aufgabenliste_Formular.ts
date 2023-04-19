@@ -32,7 +32,7 @@ namespace A05_Aufgabenliste_Formular {
         const dateValue = datetime.value;
 
         let newid = 1
-        while (-1 != data.findIndex(function(item){return item.id===newid})) {
+        while (-1 != data.findIndex(function (item) { return item.id === newid })) {
             newid = newid + 1
         }
         const newItem: Item = {
@@ -52,6 +52,20 @@ namespace A05_Aufgabenliste_Formular {
         inputComment.value = '';
         selectName.value = '';
         datetime.value = '';
+
+        var newItem: Item = {
+            id: newid,
+            title: inputValue,
+            comment: commentValue,
+            name: nameValue,
+            date: dateValue,
+            status: false,
+        };
+        
+        // Hinzufügen der sendData-Funktion, um neue Aufgaben an den Server zu senden
+        sendData('your-server-url', 'POST', newItem);
+        
+        data.push(newItem);
     }
 
 
@@ -91,7 +105,7 @@ namespace A05_Aufgabenliste_Formular {
 
 
     function deletetask(id: number): void {
-        const index = data.findIndex(function (item){return item.id===id});
+        const index = data.findIndex(function (item) { return item.id === id });
         data.splice(index, 1);
     }
 
@@ -99,6 +113,27 @@ namespace A05_Aufgabenliste_Formular {
         const target = event.target as HTMLElement;
         const divToDelete = target.closest('div');
         divToDelete && divToDelete.remove();
+    }
+
+    async function sendData(url: string, method: string, data: any): Promise<void> {
+        try {
+            var response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            var responseData = await response.json();
+            console.log('Data sent successfully:', responseData);
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
     }
 
 }
