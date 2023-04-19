@@ -1,4 +1,3 @@
-
 namespace A05_Aufgabenliste_Formular {
     /*
      Aufgabe: <Aufgabe 05 Aufgabenliste_Formular>
@@ -32,7 +31,7 @@ namespace A05_Aufgabenliste_Formular {
         const dateValue = datetime.value;
 
         let newid = 1
-        while (-1 != data.findIndex(function (item) { return item.id === newid })) {
+        while (-1 != data.findIndex(function(item){return item.id===newid})) {
             newid = newid + 1
         }
         const newItem: Item = {
@@ -52,25 +51,11 @@ namespace A05_Aufgabenliste_Formular {
         inputComment.value = '';
         selectName.value = '';
         datetime.value = '';
-
-        var newItem: Item = {
-            id: newid,
-            title: inputValue,
-            comment: commentValue,
-            name: nameValue,
-            date: dateValue,
-            status: false,
-        };
-        
-        // Hinzufügen der sendData-Funktion, um neue Aufgaben an den Server zu senden
-        sendData('your-server-url', 'POST', newItem);
-        
-        data.push(newItem);
     }
 
 
     function createtask(item: Item): void {
-        const newDiv = document.createElement('div');
+        let newDiv = document.createElement('div');
         newDiv.classList.add('inputtask')
         newDiv.innerHTML = `
             <input type="radio" id="edit" name="edit" value="HTML">
@@ -84,15 +69,15 @@ namespace A05_Aufgabenliste_Formular {
             <input type="datetime-local" name="date" id="datetime" placeholder="${item.date}">
         `;
 
-        const deleteButton = newDiv.querySelector('#deletetask');
+        let deleteButton = newDiv.querySelector('#deletetask');
         if (deleteButton) {
-            deleteButton.addEventListener('click', function (event) {
+            deleteButton.addEventListener('click', function(event) {
                 deletetaskdom(event);
                 deletetask(item.id);
             });
         }
 
-        const container = document.querySelector('#task-container');
+        let container = document.querySelector('#task-container');
         container && container.appendChild(newDiv);
     }
 
@@ -105,7 +90,7 @@ namespace A05_Aufgabenliste_Formular {
 
 
     function deletetask(id: number): void {
-        const index = data.findIndex(function (item) { return item.id === id });
+        let index = data.findIndex(function(item) {return item.id === id});
         data.splice(index, 1);
     }
 
@@ -115,25 +100,6 @@ namespace A05_Aufgabenliste_Formular {
         divToDelete && divToDelete.remove();
     }
 
-    async function sendData(url: string, method: string, data: any): Promise<void> {
-        try {
-            var response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            var responseData = await response.json();
-            console.log('Data sent successfully:', responseData);
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-        }
-    }
-
 }
+
+
