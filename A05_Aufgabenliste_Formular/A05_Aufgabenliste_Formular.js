@@ -1,8 +1,8 @@
 "use strict";
-var A04_Aufgabenliste_Formular;
-(function (A04_Aufgabenliste_Formular) {
+var A05_Aufgabenliste_Formular;
+(function (A05_Aufgabenliste_Formular) {
     /*
-     Aufgabe: <Aufgabe 04 Aufgabenliste_Formular>
+     Aufgabe: <Aufgabe 05 Aufgabenliste_Formular>
      Name:<Pia Schwer>
      Matrikel: <272266>
      Datum: <15.04.23>
@@ -13,7 +13,7 @@ var A04_Aufgabenliste_Formular;
     function handleLoad() {
         let addtask = document.querySelector('#addtask');
         addtask.addEventListener('click', logaddtask);
-        console.log(A04_Aufgabenliste_Formular.data);
+        console.log(A05_Aufgabenliste_Formular.data);
         loaddata();
     }
     function logaddtask() {
@@ -26,7 +26,7 @@ var A04_Aufgabenliste_Formular;
         const datetime = document.querySelector('#datetime');
         const dateValue = datetime.value;
         let newid = 1;
-        while (-1 != A04_Aufgabenliste_Formular.data.findIndex(item => item.id === newid)) {
+        while (-1 != A05_Aufgabenliste_Formular.data.findIndex(function (item) { return item.id === newid; })) {
             newid = newid + 1;
         }
         const newItem = {
@@ -37,12 +37,23 @@ var A04_Aufgabenliste_Formular;
             date: dateValue,
             status: false,
         };
-        A04_Aufgabenliste_Formular.data.push(newItem);
+        A05_Aufgabenliste_Formular.data.push(newItem);
         createtask(newItem);
         inputTodo.value = '';
         inputComment.value = '';
         selectName.value = '';
         datetime.value = '';
+        var newItem = {
+            id: newid,
+            title: inputValue,
+            comment: commentValue,
+            name: nameValue,
+            date: dateValue,
+            status: false,
+        };
+        // Hinzufügen der sendData-Funktion, um neue Aufgaben an den Server zu senden
+        sendData('your-server-url', 'POST', newItem);
+        A05_Aufgabenliste_Formular.data.push(newItem);
     }
     function createtask(item) {
         const newDiv = document.createElement('div');
@@ -60,27 +71,46 @@ var A04_Aufgabenliste_Formular;
         `;
         const deleteButton = newDiv.querySelector('#deletetask');
         if (deleteButton) {
-            deleteButton.addEventListener('click', event => {
+            deleteButton.addEventListener('click', function (event) {
                 deletetaskdom(event);
                 deletetask(item.id);
             });
         }
         const container = document.querySelector('#task-container');
-        container?.appendChild(newDiv);
+        container && container.appendChild(newDiv);
     }
     function loaddata() {
-        A04_Aufgabenliste_Formular.data.forEach(function (item) {
+        A05_Aufgabenliste_Formular.data.forEach(function (item) {
             createtask(item);
         });
     }
     function deletetask(id) {
-        const index = A04_Aufgabenliste_Formular.data.findIndex(item => item.id === id);
-        A04_Aufgabenliste_Formular.data.splice(index, 1);
+        const index = A05_Aufgabenliste_Formular.data.findIndex(function (item) { return item.id === id; });
+        A05_Aufgabenliste_Formular.data.splice(index, 1);
     }
     function deletetaskdom(event) {
         const target = event.target;
         const divToDelete = target.closest('div');
-        divToDelete?.remove();
+        divToDelete && divToDelete.remove();
     }
-})(A04_Aufgabenliste_Formular || (A04_Aufgabenliste_Formular = {}));
-//# sourceMappingURL=A04_Aufgabenliste_Formular.js.map
+    async function sendData(url, method, data) {
+        try {
+            var response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            var responseData = await response.json();
+            console.log('Data sent successfully:', responseData);
+        }
+        catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    }
+})(A05_Aufgabenliste_Formular || (A05_Aufgabenliste_Formular = {}));
+//# sourceMappingURL=A05_Aufgabenliste_Formular.js.map
