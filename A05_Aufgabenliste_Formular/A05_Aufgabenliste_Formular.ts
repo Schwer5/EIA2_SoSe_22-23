@@ -76,6 +76,7 @@ namespace A05_Aufgabenliste_Formular {
             </select>
             <input type="datetime-local" name="date" id="datetime" placeholder="${item.date}">
         `;
+        
 
         let deleteButton = newDiv.querySelector('#deletetask');
         if (deleteButton) {
