@@ -8,13 +8,21 @@ namespace A05_Aufgabenliste_Formular {
      Quellen: Stack Overflow, Developer Mozilla,Github Jirka, Vorherige Aufgabe(n) aus EIA1
      */
     window.addEventListener('load', handleLoad);
+    interface Item {
+        id: number;
+        title: string;
+        comment: string;
+        name: string;
+        date: string;
+        status: boolean;
+    }
+    let data: Item[] = [];
 
     function handleLoad() {
         let addtask: HTMLElement = <HTMLElement>document.querySelector('#addtask');
         addtask.addEventListener('click', logaddtask);
-        console.log(data)
+        console.log(data);
         loaddata();
-
     }
 
     function logaddtask(): void {
@@ -31,7 +39,7 @@ namespace A05_Aufgabenliste_Formular {
         const dateValue = datetime.value;
 
         let newid = 1
-        while (-1 != data.findIndex(function(item){return item.id===newid})) {
+        while (-1 != data.findIndex(function (item) { return item.id === newid })) {
             newid = newid + 1
         }
         const newItem: Item = {
@@ -71,7 +79,7 @@ namespace A05_Aufgabenliste_Formular {
 
         let deleteButton = newDiv.querySelector('#deletetask');
         if (deleteButton) {
-            deleteButton.addEventListener('click', function(event) {
+            deleteButton.addEventListener('click', function (event) {
                 deletetaskdom(event);
                 deletetask(item.id);
             });
@@ -82,7 +90,11 @@ namespace A05_Aufgabenliste_Formular {
     }
 
 
-    function loaddata(): void {
+    async function loaddata(): Promise<void> {
+        let response: Response = await fetch('data.json');
+        let task: string = await response.text();
+        let data: Item[] = JSON.parse(task);
+        
         data.forEach(function (item) {
             createtask(item);
         });
@@ -90,7 +102,7 @@ namespace A05_Aufgabenliste_Formular {
 
 
     function deletetask(id: number): void {
-        let index = data.findIndex(function(item) {return item.id === id});
+        let index = data.findIndex(function (item) { return item.id === id });
         data.splice(index, 1);
     }
 

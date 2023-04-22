@@ -10,10 +10,11 @@ var A05_Aufgabenliste_Formular;
      Quellen: Stack Overflow, Developer Mozilla,Github Jirka, Vorherige Aufgabe(n) aus EIA1
      */
     window.addEventListener('load', handleLoad);
+    let data = [];
     function handleLoad() {
         let addtask = document.querySelector('#addtask');
         addtask.addEventListener('click', logaddtask);
-        console.log(A05_Aufgabenliste_Formular.data);
+        console.log(data);
         loaddata();
     }
     function logaddtask() {
@@ -26,7 +27,7 @@ var A05_Aufgabenliste_Formular;
         const datetime = document.querySelector('#datetime');
         const dateValue = datetime.value;
         let newid = 1;
-        while (-1 != A05_Aufgabenliste_Formular.data.findIndex(function (item) { return item.id === newid; })) {
+        while (-1 != data.findIndex(function (item) { return item.id === newid; })) {
             newid = newid + 1;
         }
         const newItem = {
@@ -37,7 +38,7 @@ var A05_Aufgabenliste_Formular;
             date: dateValue,
             status: false,
         };
-        A05_Aufgabenliste_Formular.data.push(newItem);
+        data.push(newItem);
         createtask(newItem);
         inputTodo.value = '';
         inputComment.value = '';
@@ -68,14 +69,17 @@ var A05_Aufgabenliste_Formular;
         let container = document.querySelector('#task-container');
         container && container.appendChild(newDiv);
     }
-    function loaddata() {
-        A05_Aufgabenliste_Formular.data.forEach(function (item) {
+    async function loaddata() {
+        let response = await fetch('data.json');
+        let task = await response.text();
+        let data = JSON.parse(task);
+        data.forEach(function (item) {
             createtask(item);
         });
     }
     function deletetask(id) {
-        let index = A05_Aufgabenliste_Formular.data.findIndex(function (item) { return item.id === id; });
-        A05_Aufgabenliste_Formular.data.splice(index, 1);
+        let index = data.findIndex(function (item) { return item.id === id; });
+        data.splice(index, 1);
     }
     function deletetaskdom(event) {
         const target = event.target;
