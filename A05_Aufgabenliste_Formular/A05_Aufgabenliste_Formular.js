@@ -72,7 +72,8 @@ var A05_Aufgabenliste_Formular;
     async function loaddata() {
         let response = await fetch('data.json');
         let task = await response.text();
-        let data = JSON.parse(task);
+        let dataJSON = JSON.parse(task);
+        data = dataJSON.data;
         data.forEach(function (item) {
             createtask(item);
         });

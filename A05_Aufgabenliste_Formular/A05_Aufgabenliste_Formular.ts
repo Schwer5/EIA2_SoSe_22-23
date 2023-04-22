@@ -93,7 +93,8 @@ namespace A05_Aufgabenliste_Formular {
     async function loaddata(): Promise<void> {
         let response: Response = await fetch('data.json');
         let task: string = await response.text();
-        let data: Item[] = JSON.parse(task);
+        let dataJSON: any  = JSON.parse(task);
+        data = dataJSON.data;
         
         data.forEach(function (item) {
             createtask(item);
