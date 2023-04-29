@@ -11,13 +11,12 @@ var A05_Aufgabenliste_Formular;
      */
     window.addEventListener('load', handleLoad);
     let data = [];
-    function handleLoad() {
+    async function handleLoad() {
         let addtask = document.querySelector('#addtask');
         addtask.addEventListener('click', logaddtask);
-        console.log(data);
         loaddata();
     }
-    function logaddtask() {
+    async function logaddtask() {
         const inputTodo = document.querySelector('#inputTodo');
         const inputValue = inputTodo.value;
         const inputComment = document.querySelector('#inputComment');
@@ -26,9 +25,17 @@ var A05_Aufgabenliste_Formular;
         const nameValue = selectName.value;
         const datetime = document.querySelector('#datetime');
         const dateValue = datetime.value;
-        let newid = 1;
-        while (-1 != data.findIndex(function (item) { return item.id === newid; })) {
+        let newid = 0;
+        let idExists = true;
+        while (idExists) {
             newid = newid + 1;
+            idExists = false;
+            for (let docId in data) {
+                let item = data[docId];
+                if (item.id == newid) {
+                    idExists = true;
+                }
+            }
         }
         const newItem = {
             id: newid,
@@ -40,6 +47,7 @@ var A05_Aufgabenliste_Formular;
         };
         data.push(newItem);
         createtask(newItem);
+        await fetch(`https://webuser.hs-furtwangen.de/~schwerpi/Database/?command=insert&collection=TaskList&data=${JSON.stringify(newItem)}`);
         inputTodo.value = '';
         inputComment.value = '';
         selectName.value = '';
@@ -59,38 +67,42 @@ var A05_Aufgabenliste_Formular;
             </select>
             <input type="datetime-local" name="date" id="datetime" placeholder="${item.date}">
         `;
-        let query = new URLSearchParams();
-        query.set("command", "insert");
-        query.set("collection", "TaskList");
-        query.set("data", JSON.stringify(json));
-        await fetch("https://webuser.hs-furtwangen.de/~schwerpi/Database/");
         let deleteButton = newDiv.querySelector('#deletetask');
         if (deleteButton) {
             deleteButton.addEventListener('click', function (event) {
                 deletetaskdom(event);
-                deletetask(item.id);
+                deleteDataFromServer(item.id);
             });
         }
         let container = document.querySelector('#task-container');
         container && container.appendChild(newDiv);
     }
     async function loaddata() {
-        let response = await fetch('https://webuser.hs-furtwangen.de/~schwerpi/Database/TaskList.json');
-        let task = await response.text();
-        let dataJSON = JSON.parse(task);
+        const response = await fetch("https://webuser.hs-furtwangen.de/~schwerpi/Database/?command=find&collection=TaskList");
+        const dataJSON = await response.json();
         data = dataJSON.data;
-        data.forEach(function (item) {
+        console.log(data);
+        console.log(dataJSON);
+        for (let docId in data) {
+            let item = data[docId];
             createtask(item);
-        });
-    }
-    function deletetask(id) {
-        let index = data.findIndex(function (item) { return item.id === id; });
-        data.splice(index, 1);
+        }
     }
     function deletetaskdom(event) {
         const target = event.target;
         const divToDelete = target.closest('div');
         divToDelete && divToDelete.remove();
+    }
+    async function deleteDataFromServer(id) {
+        let dataBaseIndex = "";
+        for (let docId in data) { //wir gehen durch jede docId(z.B.644cdd7d5caa0) in data durch 
+            let item = data[docId]; // wir holen uns das item für eine docId 
+            if (item.id == id) { // wir schauen ob das item mit docId die gesuchte item.id(man geht in ein item und vergleicht dort die "id") hat
+                dataBaseIndex = docId; // wenn wir die übereinstimmende id gefunden haben, speichern wir diese in dataBaseIndex
+            }
+            const deleteUrl = `https://webuser.hs-furtwangen.de/~schwerpi/Database/?command=delete&collection=TaskList&id=${dataBaseIndex}`;
+            await fetch(deleteUrl);
+        }
     }
 })(A05_Aufgabenliste_Formular || (A05_Aufgabenliste_Formular = {}));
 //# sourceMappingURL=A06_Aufgabenliste_Formular.js.map
