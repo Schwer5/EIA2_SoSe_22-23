@@ -41,14 +41,14 @@ namespace A05_Aufgabenliste_Formular {
         const dateValue = datetime.value;
 
         let newid = 0;
-        let idExists = true
-        while (idExists) {
-            newid = newid + 1
-            idExists = false
-            for (let docId in data) {
-                let item = data[docId]
-                if (item.id == newid) {
-                    idExists = true;
+        let idExists = true//hier wird idExists auf false gesetzt, um zu überprüfen, 
+        while (idExists) {//ob die aktuelle Nummer (newid) einzigartig ist. 
+            newid = newid + 1//Wir gehen zunächst davon aus, dass sie einzigartig ist, 
+            idExists = false//indem wir idExists auf false setzen. Dann überprüfen wir das, 
+            for (let docId in data) {//indem wir alle vorhandenen IDs in data durchgehen. Wenn wir eine gleiche ID finden, 
+                let item = data[docId]//setzen wir idExists auf true, um zu zeigen, dass die aktuelle Nummer doch nicht einzigartig ist.
+                if (item.id == newid) {// Dann suchen wir weiter nach einer einzigartigen Nummer.
+                    idExists = true; 
                 }
             }
         }
@@ -87,10 +87,7 @@ namespace A05_Aufgabenliste_Formular {
                 <option value="" selected>${item.name}</option>
             </select>
             <input type="datetime-local" name="date" id="datetime" placeholder="${item.date}">
-        `;
-
-
-
+        `; 
 
         let deleteButton = newDiv.querySelector('#deletetask');
         if (deleteButton) {
@@ -109,8 +106,6 @@ namespace A05_Aufgabenliste_Formular {
         const response = await fetch("https://webuser.hs-furtwangen.de/~schwerpi/Database/?command=find&collection=TaskList");
         const dataJSON = await response.json();
         data = dataJSON.data;
-        console.log(data)
-        console.log(dataJSON)
         for (let docId in data) {
             let item = data[docId]
 
