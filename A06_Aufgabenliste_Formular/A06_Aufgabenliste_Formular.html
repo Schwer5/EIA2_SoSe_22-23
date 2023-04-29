@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDo App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="A06_Aufgabenliste_Formular.css">
+    
+    <script src="A06_Aufgabenliste_Formular.js"></script>
+</head>
+
+<body>
+    <main>
+        <h1>ToDo App</h1>
+        <p id="counter">3 in total</p>
+
+        <fieldset class="inputtask">
+            <button id="addtask"><i class="fas fa-plus-circle"></i></button>
+            <input type="text" id="inputTodo" placeholder="Aufgabe hinzufügen...">
+            <input type="text" id="inputComment" placeholder="Kommentar...">
+            <select name="Name" id="selectname">
+                <option value="" selected>Name</option>
+                <option value="Hanna">Hanna</option>
+                <option value="Selina">Selina</option>
+                <option value="Lena">Lena</option>
+            </select>
+            <input type="datetime-local" name="date" id="datetime">
+        </fieldset>
+        <div id="task-container"></div>
+
+    </main>
+</body>
+
+</html>
