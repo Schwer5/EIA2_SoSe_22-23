@@ -10,24 +10,14 @@ var L082;
             return;
         crc2 = canvas.getContext("2d");
         let horizon = crc2.canvas.height * goldenCut;
-        let streetWidthBack = 25;
-        let streetWidthFront = 100;
-        let treesOffsetBack = 15;
-        let treesOffsetFront = 100;
         let posMountains = { x: 0, y: horizon };
-        let posStreet = { x: crc2.canvas.width / 2, y: horizon };
-        let posTreesStart = { x: posStreet.x - streetWidthBack / 2 - treesOffsetBack, y: horizon };
-        let posTreesEnd = { x: crc2.canvas.width / 2 - streetWidthFront / 2 - treesOffsetFront, y: crc2.canvas.height };
         drawSky();
         drawSun({ x: 100, y: 75 });
         drawCloud({ x: 500, y: 125 }, { x: 250, y: 75 });
         drawMountains(posMountains, 75, 200, "grey", "white");
         drawMountains(posMountains, 50, 150, "grey", "lightgrey");
-        drawLandingArea(posStreet, streetWidthBack, streetWidthFront);
-        drawTrees(8, posTreesStart, posTreesEnd, 0.1, 0.37, 1.4);
-        posTreesStart.x = posStreet.x + streetWidthBack / 2 + treesOffsetBack;
-        posTreesEnd.x = posTreesEnd.x + streetWidthFront + 2 * treesOffsetFront;
-        drawTrees(8, posTreesStart, posTreesEnd, 0.1, 0.37, 1.4);
+        drawLandingArea();
+        drawTriangle({ x: 0, y: 440 });
         drawParagliders();
         drawInsects();
     }
@@ -35,8 +25,9 @@ var L082;
         console.log("Background");
         let gradient = crc2.createLinearGradient(0, 0, 0, crc2.canvas.height);
         gradient.addColorStop(0, "lightblue");
-        gradient.addColorStop(goldenCut, "white");
-        gradient.addColorStop(1, "HSL(100,80%,30%");
+        gradient.addColorStop(goldenCut - 0.1, "white");
+        gradient.addColorStop(goldenCut, "HSL(100,80%,20%");
+        gradient.addColorStop(1, "HSL(100,90%,40%");
         crc2.fillStyle = gradient;
         crc2.fillRect(0, 0, crc2.canvas.width, crc2.canvas.height);
     }
@@ -100,61 +91,22 @@ var L082;
         crc2.fill();
         crc2.restore();
     }
-    function drawLandingArea(_position, _widthBack, _widthFront) {
-        console.log("Street", _position, _widthBack, _widthFront);
+    function drawLandingArea() {
         crc2.beginPath();
-        crc2.moveTo(_position.x + _widthBack / 2, _position.y);
-        crc2.lineTo(crc2.canvas.width / 2 + _widthFront / 2, crc2.canvas.height);
-        crc2.lineTo(crc2.canvas.width / 2 - _widthFront / 2, crc2.canvas.height);
-        crc2.lineTo(_position.x - _widthBack / 2, _position.y);
-        crc2.closePath();
-        let gradient = crc2.createLinearGradient(0, _position.y, 0, crc2.canvas.height);
-        gradient.addColorStop(0, "darkgrey");
-        gradient.addColorStop(0.6, "black ");
-        crc2.fillStyle = gradient;
+        crc2.ellipse(400, 500, 150, 50, 0, 0, 2 * Math.PI);
+        crc2.fillStyle = "green";
         crc2.fill();
     }
-    function drawTrees(_nTrees, _posStart, _posEnd, _minScale, _stepPos, _stepScale) {
-        console.log("Trees", _posStart, _posEnd);
-        let transform = crc2.getTransform();
-        let step = {
-            x: (_posEnd.x - _posStart.x) * _stepPos,
-            y: (_posEnd.y - _posStart.y) * _stepPos
-        };
-        crc2.translate(_posStart.x, _posStart.y);
-        crc2.scale(_minScale, _minScale);
-        do {
-            drawTree();
-            crc2.translate(step.x, step.y);
-            crc2.scale(_stepScale, _stepScale);
-        } while (--_nTrees > 0);
-        crc2.setTransform(transform);
-    }
-    function drawTree() {
-        console.log("Tree");
-        let nBranches = 50;
-        let maxRadius = 60;
-        let branch = new Path2D();
-        branch.arc(0, 0, maxRadius, 0, 2 * Math.PI);
-        crc2.fillStyle = "brown";
-        crc2.fillRect(0, 0, 20, -200);
+    function drawTriangle(_position) {
         crc2.save();
-        crc2.translate(0, -120);
-        do {
-            let y = Math.random() * 350;
-            let size = 1 - y / 700;
-            let x = (Math.random() - 0.5) * 2 * maxRadius;
-            crc2.save();
-            crc2.translate(0, -y);
-            crc2.scale(size, size);
-            crc2.translate(x, 0);
-            let colorAngle = 120 - Math.random() * 60;
-            let color = "HSLA(" + colorAngle + ", 50%, 30%, 0.5)";
-            crc2.fillStyle = color;
-            crc2.fill(branch);
-            crc2.restore();
-        } while (--nBranches > 0);
-        crc2.restore();
+        crc2.translate(_position.x, _position.y);
+        crc2.beginPath();
+        crc2.moveTo(0, 0); // Erster Punkt des Dreiecks
+        crc2.lineTo(400, 0); // Zweiter Punkt des Dreiecks
+        crc2.lineTo(0, -200); // Dritter Punkt des Dreiecks
+        crc2.closePath(); // Schließt den Pfad und führt zum ersten Punkt zurück
+        crc2.fillStyle = "grey";
+        crc2.fill();
     }
     function drawParagliders() {
         // Hier können Sie den Code zum Zeichnen der Paraglider hinzufügen
