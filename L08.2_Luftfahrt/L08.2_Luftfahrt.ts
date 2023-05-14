@@ -1,3 +1,9 @@
+// Name:<Pia Schwer>
+// Matrikel: <272266>
+// Datum: <15.04.23>
+// Zusammenarbeit mit Theresa Hauser, Marie Eckl
+// Quellen: Stack Overflow, Developer Mozilla,Github Jirka, Vorherige Aufgabe(n) aus EIA1
+
 namespace L082 {
     interface Vector {
         x: number;
