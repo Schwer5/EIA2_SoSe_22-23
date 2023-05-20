@@ -1,6 +1,10 @@
 "use strict";
 var OMD;
 (function (OMD) {
+    //Name:<Pia Schwer>
+    // Matrikel: <272266>
+    //Datum: <20.05.23>
+    //Quellen: Stack Overflow,Chat Gpt, Developer Mozilla,Github Jirka
     class Animal {
         name;
         animalType;
