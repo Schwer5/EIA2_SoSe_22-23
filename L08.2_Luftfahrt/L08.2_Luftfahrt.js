@@ -1,4 +1,9 @@
 "use strict";
+// Name:<Pia Schwer>
+// Matrikel: <272266>
+// Datum: <15.04.23>
+// Zusammenarbeit mit Theresa Hauser, Marie Eckl
+// Quellen: Stack Overflow, Developer Mozilla,Github Jirka, Vorherige Aufgabe(n) aus EIA1
 var L082;
 (function (L082) {
     window.addEventListener("load", handleLoad);
