@@ -1,6 +1,6 @@
 "use strict";
-var canvas;
-(function (canvas_1) {
+var backgroundCanvas;
+(function (backgroundCanvas) {
     window.addEventListener("load", function () {
         let canvas = document.querySelector("canvas");
         let crc2 = canvas.getContext("2d");
@@ -9,5 +9,5 @@ var canvas;
         crc2.closePath();
         crc2.stroke();
     });
-})(canvas || (canvas = {}));
+})(backgroundCanvas || (backgroundCanvas = {}));
 //# sourceMappingURL=Canvas01.js.map

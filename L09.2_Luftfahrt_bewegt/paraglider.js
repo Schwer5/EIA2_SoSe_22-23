@@ -11,34 +11,33 @@ var L092;
         position;
         velocity;
         activity;
-        constructor(position, activity) {
+        colorHsl;
+        constructor(position, activity, colorHsl) {
             this.position = position;
             this.activity = activity;
+            this.colorHsl = colorHsl;
         }
         update() {
             // Activity change based on position
-            if (this.position.x < 200 && this.activity == Activity.WALK) { // Replace with your own condition
+            if (this.position.x < 200 && this.activity == Activity.WALK && Math.random() < 0.1) {
                 this.activity = Activity.CLIMB;
             }
-            else if (this.position.y < 200 && this.activity == Activity.CLIMB) { // Replace with your own condition
+            else if (this.position.y < 200 && this.activity == Activity.CLIMB) {
                 this.activity = Activity.FLY;
             }
-            else if (this.position.y > 500 && this.activity == Activity.WALK) {
+            else if (this.position.y > 400 && this.activity == Activity.FLY && Math.random() < 0.1) {
                 this.activity = Activity.WALK;
             }
             // Update velocity based on activity
             switch (this.activity) {
                 case Activity.WALK:
-                    // Update velocity for WALK
-                    this.velocity = { x: -50, y: 0 };
+                    this.velocity = { x: -5, y: 0 };
                     break;
                 case Activity.CLIMB:
-                    // Update velocity for CLIMB
-                    this.velocity = { x: 10, y: -50 };
+                    this.velocity = { x: -3, y: -5 };
                     break;
                 case Activity.FLY:
-                    // Update velocity for FLY
-                    this.velocity = { x: 100, y: 40 };
+                    this.velocity = { x: 10, y: 4 };
                     break;
             }
             // Update position based on velocity
@@ -60,94 +59,77 @@ var L092;
             }
         }
         drawParagliding() {
-            console.log("paraglider");
-            let color = Math.floor(Math.random() * 360);
-            let saturation = Math.floor(Math.random() * 30) + 90;
-            let lightness = Math.floor(Math.random() * 30) + 30;
-            let color2 = Math.floor(Math.random() * 360);
-            let saturation2 = Math.floor(Math.random() * 50) + 70;
-            let lightness2 = Math.floor(Math.random() * 40) + 20;
             //Body of Paraglider
-            L092.crc2.beginPath();
-            L092.crc2.moveTo(this.position.x, this.position.y + 5);
-            L092.crc2.lineTo(this.position.x + 12, this.position.y + 36);
-            L092.crc2.lineTo(this.position.x - 12, this.position.y + 36);
-            L092.crc2.lineTo(this.position.x, this.position.y + 5);
-            L092.crc2.fillStyle = "hsl(" + color + ", " + saturation + "%, " + lightness + "%)";
-            L092.crc2.fill();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.moveTo(this.position.x, this.position.y + 5);
+            L092.foregroundCtx.lineTo(this.position.x + 12, this.position.y + 36);
+            L092.foregroundCtx.lineTo(this.position.x - 12, this.position.y + 36);
+            L092.foregroundCtx.lineTo(this.position.x, this.position.y + 5);
+            L092.foregroundCtx.fillStyle = this.colorHsl;
+            L092.foregroundCtx.fill();
             //Head of Paraglider 
-            L092.crc2.beginPath();
-            L092.crc2.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI);
-            L092.crc2.fillStyle = "HSL(25,75%,70%)";
-            L092.crc2.fill();
-            L092.crc2.closePath();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI);
+            L092.foregroundCtx.fillStyle = "HSL(25,75%,70%)";
+            L092.foregroundCtx.fill();
+            L092.foregroundCtx.closePath();
             //Ropes
-            L092.crc2.beginPath();
-            L092.crc2.moveTo(this.position.x + 1, this.position.y + 11);
-            L092.crc2.lineTo(this.position.x + 35, this.position.y - 20);
-            L092.crc2.strokeStyle = "black";
-            L092.crc2.stroke();
-            L092.crc2.closePath();
-            L092.crc2.beginPath();
-            L092.crc2.moveTo(this.position.x - 1, this.position.y + 11);
-            L092.crc2.lineTo(this.position.x - 35, this.position.y - 20);
-            L092.crc2.strokeStyle = "black";
-            L092.crc2.stroke();
-            L092.crc2.closePath();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.moveTo(this.position.x + 1, this.position.y + 11);
+            L092.foregroundCtx.lineTo(this.position.x + 35, this.position.y - 20);
+            L092.foregroundCtx.strokeStyle = "black";
+            L092.foregroundCtx.stroke();
+            L092.foregroundCtx.closePath();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.moveTo(this.position.x - 1, this.position.y + 11);
+            L092.foregroundCtx.lineTo(this.position.x - 35, this.position.y - 20);
+            L092.foregroundCtx.strokeStyle = "black";
+            L092.foregroundCtx.stroke();
+            L092.foregroundCtx.closePath();
             //Gleitschirm
-            L092.crc2.beginPath();
-            L092.crc2.ellipse(this.position.x, this.position.y - 25, 40, 12, 0, 0, Math.PI * 2);
-            L092.crc2.fillStyle = "hsl(" + color2 + ", " + saturation2 + "%, " + lightness2 + "%)";
-            L092.crc2.fill();
-            L092.crc2.closePath();
-            L092.crc2.restore();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.ellipse(this.position.x, this.position.y - 25, 40, 12, 0, 0, Math.PI * 2);
+            L092.foregroundCtx.fillStyle = this.colorHsl;
+            L092.foregroundCtx.fill();
+            L092.foregroundCtx.closePath();
+            L092.foregroundCtx.restore();
         }
         ;
         drawWalking() {
-            console.log("Mountains");
-            L092.crc2.save();
-            L092.crc2.translate(this.position.x, this.position.y);
-            let color = Math.floor(Math.random() * 360);
-            let saturation = Math.floor(Math.random() * 30) + 90;
-            let lightness = Math.floor(Math.random() * 30) + 30;
+            L092.foregroundCtx.save();
             //Head of WaitingPersons
-            L092.crc2.beginPath();
-            L092.crc2.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI);
-            L092.crc2.fillStyle = "HSL(25,75%,70%)";
-            L092.crc2.fill();
-            L092.crc2.closePath();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI);
+            L092.foregroundCtx.fillStyle = "HSL(25,75%,70%)";
+            L092.foregroundCtx.fill();
+            L092.foregroundCtx.closePath();
             //Body of WaitingPiapersons
-            L092.crc2.beginPath();
-            L092.crc2.moveTo(this.position.x, this.position.y + 5);
-            L092.crc2.lineTo(this.position.x + 12, this.position.y + 36);
-            L092.crc2.lineTo(this.position.x - 12, this.position.y + 36);
-            L092.crc2.lineTo(this.position.x, this.position.y + 5);
-            L092.crc2.fillStyle = "hsl(" + color + ", " + saturation + "%, " + lightness + "%)";
-            L092.crc2.fill();
-            L092.crc2.restore();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.moveTo(this.position.x, this.position.y + 5);
+            L092.foregroundCtx.lineTo(this.position.x + 12, this.position.y + 36);
+            L092.foregroundCtx.lineTo(this.position.x - 12, this.position.y + 36);
+            L092.foregroundCtx.lineTo(this.position.x, this.position.y + 5);
+            L092.foregroundCtx.fillStyle = this.colorHsl;
+            L092.foregroundCtx.fill();
+            L092.foregroundCtx.restore();
         }
         drawClimbing() {
-            console.log("Mountains");
-            L092.crc2.save();
-            L092.crc2.translate(this.position.x, this.position.y);
-            let color = Math.floor(Math.random() * 360);
-            let saturation = Math.floor(Math.random() * 30) + 90;
-            let lightness = Math.floor(Math.random() * 30) + 30;
+            L092.foregroundCtx.save();
             //Head of WaitingPersons
-            L092.crc2.beginPath();
-            L092.crc2.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI);
-            L092.crc2.fillStyle = "HSL(25,75%,70%)";
-            L092.crc2.fill();
-            L092.crc2.closePath();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI);
+            L092.foregroundCtx.fillStyle = "HSL(25,75%,70%)";
+            L092.foregroundCtx.fill();
+            L092.foregroundCtx.closePath();
             //Body of WaitingPiapersons
-            L092.crc2.beginPath();
-            L092.crc2.moveTo(this.position.x, this.position.y + 5);
-            L092.crc2.lineTo(this.position.x + 12, this.position.y + 36);
-            L092.crc2.lineTo(this.position.x - 12, this.position.y + 36);
-            L092.crc2.lineTo(this.position.x, this.position.y + 5);
-            L092.crc2.fillStyle = "hsl(" + color + ", " + saturation + "%, " + lightness + "%)";
-            L092.crc2.fill();
-            L092.crc2.restore();
+            L092.foregroundCtx.beginPath();
+            L092.foregroundCtx.moveTo(this.position.x, this.position.y + 5);
+            L092.foregroundCtx.lineTo(this.position.x + 12, this.position.y + 36);
+            L092.foregroundCtx.lineTo(this.position.x - 12, this.position.y + 36);
+            L092.foregroundCtx.lineTo(this.position.x, this.position.y + 5);
+            L092.foregroundCtx.fillStyle = this.colorHsl;
+            L092.foregroundCtx.fill();
+            L092.foregroundCtx.restore();
         }
     }
     L092.Paraglider = Paraglider;

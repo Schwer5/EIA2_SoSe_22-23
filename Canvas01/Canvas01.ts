@@ -1,4 +1,4 @@
-namespace canvas {
+namespace backgroundCanvas {
     window.addEventListener("load", function() {
        
   
