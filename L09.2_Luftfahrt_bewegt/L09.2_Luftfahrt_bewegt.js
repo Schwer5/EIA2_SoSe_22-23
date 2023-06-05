@@ -8,7 +8,7 @@ var L092;
 (function (L092) {
     window.addEventListener("load", handleLoad);
     L092.goldenCut = 0.62;
-    let paragliders = [];
+    let paragliders = []; // Listen Paragleiter und Mosquitos
     let mosquitos = [];
     function handleLoad(_event) {
         let backgroundCanvas = document.querySelector("#background");
@@ -33,27 +33,29 @@ var L092;
         drawLandingArea({ x: 400, y: 500 }, 220, 60);
         drawKiosk({ x: 700, y: 550 });
         drawWindSock({ x: 350, y: 580 });
-        for (let index = 0; index < 10; index++) {
-            let startingPointX = 750 + Math.random() * 20;
+        for (let index = 0; index < 10; index++) { // 10 Paragleiter erstellen
+            let startingPointX = 750 + Math.random() * 20; //Startpunkt zufällig verteilt in der Nähe von Kiosk
             let startingPointY = 490 + Math.random() * 20;
-            let color = Math.floor(Math.random() * 360);
-            let saturation = Math.floor(Math.random() * 30) + 90;
-            let lightness = Math.floor(Math.random() * 30) + 30;
-            let colorHsl = "hsl(" + color + ", " + saturation + "%, " + lightness + "%)";
-            let paraglider = new L092.Paraglider({ x: startingPointX, y: startingPointY }, L092.Activity.WALK, colorHsl);
-            paragliders.push(paraglider);
+            let color = Math.floor(Math.random() * 360); // zufällige Farbe
+            let saturation = Math.floor(Math.random() * 30) + 90; // zufällige Sättigung 
+            let lightness = Math.floor(Math.random() * 30) + 30; // zufällige Helligkeit
+            let colorHsl = "hsl(" + color + ", " + saturation + "%, " + lightness + "%)"; //alles zusammenbauen als HSL String
+            let paraglider = new L092.Paraglider({ x: startingPointX, y: startingPointY }, L092.Activity.WALK, colorHsl); //erstellen eines Paragleiters
+            paragliders.push(paraglider); // den neuen Paragleiter in die Liste stecken
         }
         ;
-        for (let index = 0; index < 10; index++) {
-            let startingPointX = Math.random() * L092.foregroundCtx.canvas.width;
+        for (let index = 0; index < 10; index++) { // 10 Mosquos erstellen 
+            let startingPointX = Math.random() * L092.foregroundCtx.canvas.width; // Startpunkt völlig zufällig
             let startingPointY = Math.random() * L092.foregroundCtx.canvas.height;
-            let mosquito = new L092.Mosquito({ x: startingPointX, y: startingPointY });
-            mosquitos.push(mosquito);
+            let mosquito = new L092.Mosquito({ x: startingPointX, y: startingPointY }); // ein Mosquo erstellen 
+            mosquitos.push(mosquito); // und in die Elonn Mosque liste schieben
         }
+        //in den beiden for-Schleifen erstellen wir die 10 Paraglider und Fliegen
         setInterval(update, 40);
     }
     function update() {
         L092.foregroundCtx.clearRect(0, 0, L092.foregroundCtx.canvas.width, L092.foregroundCtx.canvas.height);
+        // aufrufen der einzelnen Einträge aus den Listen und Updaten
         for (let paraglider of paragliders) {
             paraglider.update();
         }
