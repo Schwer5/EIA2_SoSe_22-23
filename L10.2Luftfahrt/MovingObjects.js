@@ -12,10 +12,10 @@ var L102;
     L102.Vector = Vector;
     class MovingObject {
         position;
-        velocity;
+        velocity = 0;
         constructor(position) {
             this.position = position;
-        }
+       }
         update() {
             // In Unterklassen zu implementieren
         }
