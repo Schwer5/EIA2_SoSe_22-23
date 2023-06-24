@@ -1,0 +1,301 @@
+// Name:<Pia Schwer>
+// Matrikel: <272266>
+// Datum: <15.04.23>
+// Zusammenarbeit mit Theresa Hauser, Marie Eckl
+// Quellen: Stack Overflow, Developer Mozilla,Github Jirka, Vorherige Aufgabe(n) aus EIA1
+
+namespace L11_Abgabe {
+    enum Key {
+        UP = 'ArrowUp',
+        DOWN = 'ArrowDown',
+        LEFT = 'ArrowLeft',
+        RIGHT = 'ArrowRight'
+    }
+
+    enum WindDirection {
+        RIGHT = 1,
+        LEFT  = -1
+    }
+
+    window.addEventListener("load", handleLoad);
+    window.addEventListener("keydown", handleKeyDown);
+
+    export let backgroundCtx: CanvasRenderingContext2D;
+    export let foregroundCtx: CanvasRenderingContext2D;
+    export let goldenCut: number = 0.62;
+
+    export let windStrength_X: number = 0;
+    export let updateParaglider: boolean = false;
+    export let paragliderPosition_X: number = 0;
+    export let paragliderPosition_Y: number = 0;
+    export let windStrength: number = 5;
+    export let windDirection: number = 1;
+
+
+    let movingObjects: MovingObject[] = [];
+
+    function handleLoad(_event: Event): void {
+        let backgroundCanvas: HTMLCanvasElement | null = document.querySelector("#background") as HTMLCanvasElement;
+        let foregroundCanvas: HTMLCanvasElement | null = document.querySelector("#foreground") as HTMLCanvasElement;
+        if (!backgroundCanvas)
+            return;
+        if (!foregroundCanvas)
+            return;
+        backgroundCtx = <CanvasRenderingContext2D>backgroundCanvas.getContext('2d');
+        foregroundCtx = <CanvasRenderingContext2D>foregroundCanvas.getContext('2d');
+        let horizon: number = backgroundCtx.canvas.height * goldenCut;
+        let posMountains: Vector = { x: 0, y: horizon };
+        
+        foregroundCanvas.addEventListener("mousedown", handleMouseDown);
+
+        drawSky();
+        drawSun({ x: 100, y: 75 });
+        drawCloud({ x: 500, y: 125 }, { x: 250, y: 75 });
+        drawMountains(posMountains, 75, 200, "grey", "white");
+        drawMountains(posMountains, 50, 150, "grey", "lightgrey");
+        drawTriangle({ x: 0, y: 440 });
+        drawTree({ x: 100, y: 200 });
+        drawTree({ x: 50, y: 250 });
+        drawTree({ x: 20, y: 190 });
+        drawLandingArea({ x: 400, y: 500 }, 220, 60);
+        drawKiosk({ x: 700, y: 550 });
+
+        let windsock: Windsock = new Windsock({ x: 350, y: 580 })
+        movingObjects.push(windsock);
+
+        for (let index: number = 0; index < 10; index++) { // 10 Paragleiter erstellen
+            let startingPointX = 750 + Math.random() * 20; // Startpunkt zufällig verteilt in der Nähe des Kiosks
+            let startingPointY = 490 + Math.random() * 20;
+
+            let color = Math.floor(Math.random() * 360); // Zufällige Farbe
+            let saturation = Math.floor(Math.random() * 30) + 90; // Zufällige Sättigung 
+            let lightness = Math.floor(Math.random() * 30) + 30; // Zufällige Helligkeit
+
+            let colorHsl: string = "hsl(" + color + ", " + saturation + "%, " + lightness + "%)"; // Alles zusammenbauen als HSL-String
+
+            let person: Person = new Person({ x: startingPointX, y: startingPointY }, Activity.WALK, colorHsl); // Paragleiter erstellen
+            movingObjects.push(person); // Den neuen Paragleiter in die Liste stecken
+        };
+
+        for (let index: number = 0; index < 10; index++) { // 10 Mosquos erstellen 
+            let startingPointX = Math.random()*foregroundCtx.canvas.width; // Startpunkt völlig zufällig
+            let startingPointY = Math.random()*foregroundCtx.canvas.height;
+            let mosquito: Mosquito= new Mosquito({ x:startingPointX, y: startingPointY }) // ein Mosquo erstellen 
+            movingObjects.push(mosquito); // und in die Elonn Mosque liste schieben
+        }
+//in den beiden for-Schleifen erstellen wir die 10 Paraglider und Fliegen
+
+        setInterval(update, 40);
+    }
+
+    function update(): void {
+        foregroundCtx.clearRect(0, 0, foregroundCtx.canvas.width, foregroundCtx.canvas.height);
+
+        for (let object of movingObjects) {
+            object.update();
+        }
+        updateParaglider = false;
+    }
+
+    function handleKeyDown(event: KeyboardEvent): void {
+       
+        switch (event.key) {
+            case Key.UP:
+                console.log('Up arrow key pressed');
+                if (windStrength < 10) {
+                    windStrength++;
+                }
+                break;
+            case Key.DOWN:
+                console.log('Down arrow key pressed');
+                if (windStrength > 0) {
+                    windStrength--;
+                }
+                break;
+            case Key.LEFT:
+                console.log('Left arrow key pressed');
+                windDirection = WindDirection.LEFT;
+                break;
+            case Key.RIGHT:
+                console.log('Right arrow key pressed');
+                windDirection = WindDirection.RIGHT;
+                break;
+        }
+        windStrength_X = windStrength * windDirection
+    }
+
+    function handleMouseDown(event: MouseEvent): void {
+        paragliderPosition_X = event.offsetX - 40;
+        paragliderPosition_Y = event.offsetY - 60;
+
+        updateParaglider = true;
+      
+        console.log(`Mouse down at coordinates x=${paragliderPosition_X}, y=${paragliderPosition_Y}`);
+    }
+
+    function drawSky(): void {
+        console.log("Background");
+
+        let gradient: CanvasGradient = backgroundCtx.createLinearGradient(0, 0, 0, backgroundCtx.canvas.height);
+        gradient.addColorStop(0, "lightblue");
+        gradient.addColorStop(goldenCut - 0.1, "white");
+        gradient.addColorStop(goldenCut, "HSL(100,80%,20%");
+        gradient.addColorStop(1, "HSL(100,90%,40%");
+
+        backgroundCtx.fillStyle = gradient;
+        backgroundCtx.fillRect(0, 0, backgroundCtx.canvas.width, backgroundCtx.canvas.height)
+        backgroundCtx.restore();
+    }
+
+    function drawSun(_position: Vector): void {
+        console.log("sun", _position);
+
+        backgroundCtx.save();
+        backgroundCtx.translate(_position.x, _position.y);
+
+        let r1: number = 10;
+        let r2: number = 100;
+        let gradient: CanvasGradient = backgroundCtx.createRadialGradient(0, 0, r1, 0, 0, r2);
+
+        gradient.addColorStop(0, "HSLA(60,100%,90%,1");
+        gradient.addColorStop(1, "HSLA(60,50%,50%,0");
+
+        backgroundCtx.fillStyle = gradient;
+        backgroundCtx.arc(0, 0, r2, 0, 2 * Math.PI)
+        backgroundCtx.fill();
+        backgroundCtx.restore();
+    }
+
+    function drawCloud(_position: Vector, _size: Vector): void {
+        console.log("Cloud", _position, _size);
+
+
+        let nParticles: number = 20;
+        let radiusParticle: number = 50;
+        let particle: Path2D = new Path2D();
+        let gradient: CanvasGradient = backgroundCtx.createRadialGradient(0, 0, 0, 0, 0, radiusParticle);
+
+        particle.arc(0, 0, radiusParticle, 0, 2 * Math.PI);
+        gradient.addColorStop(0, "HSLA(0, 100%, 100%, 0.5)");
+        gradient.addColorStop(1, "HSLA(0, 100%, 100%, 0)");
+
+        backgroundCtx.save();
+        backgroundCtx.translate(_position.x, _position.y);
+        backgroundCtx.fillStyle = gradient;
+
+        for (let drawn: number = 0; drawn < nParticles; drawn++) {
+            backgroundCtx.save();
+            let x: number = (Math.random() - 0.5) * _size.x;
+            let y: number = - (Math.random() * _size.y);
+            backgroundCtx.translate(x, y);
+            backgroundCtx.fill(particle);
+            backgroundCtx.restore();
+        }
+        backgroundCtx.restore();
+    }
+
+    function drawMountains(_position: Vector, _min: number, _max: number, _colorLow: string, _colorHigh: string): void {
+
+        console.log("Mountains", _position, _min, _max);
+
+        let stepMin: number = 50;
+        let stepMax: number = 150;
+        let x: number = 0;
+
+        backgroundCtx.save();
+        backgroundCtx.translate(_position.x, _position.y);
+
+        backgroundCtx.beginPath();
+        backgroundCtx.moveTo(0, 0);
+        backgroundCtx.lineTo(0, -_max);
+
+        do {
+            x += stepMin + Math.random() * (stepMax - stepMin);
+            let y: number = -_min - Math.random() * (_max - _min);
+
+            backgroundCtx.lineTo(x, y);
+        } while (x < backgroundCtx.canvas.width);
+
+        backgroundCtx.lineTo(x, 0);
+        backgroundCtx.closePath();
+
+        let gradient: CanvasGradient = backgroundCtx.createLinearGradient(0, 0, 0, -_max);
+        gradient.addColorStop(0, _colorLow);
+        gradient.addColorStop(0.7, _colorHigh);
+
+        backgroundCtx.fillStyle = gradient;
+        backgroundCtx.fill();
+
+        backgroundCtx.restore();
+    }
+
+    function drawLandingArea(_position: Vector, _radiusX: number, _radiusY: number): void {
+        backgroundCtx.save();
+        backgroundCtx.translate(_position.x, _position.y);
+
+        backgroundCtx.scale(_radiusX / _radiusY, 1)
+        backgroundCtx.fillStyle = "green";
+        backgroundCtx.beginPath();
+        backgroundCtx.arc(0, 0, _radiusY, 0, 2 * Math.PI);
+        backgroundCtx.closePath();
+        backgroundCtx.fill();
+        backgroundCtx.restore();
+    }
+
+    function drawTriangle(_position: Vector): void {
+        backgroundCtx.save();
+        backgroundCtx.translate(_position.x, _position.y);
+        backgroundCtx.beginPath();
+        backgroundCtx.moveTo(0, 0); // Erster Punkt des Dreiecks
+        backgroundCtx.lineTo(400, 0); // Zweiter Punkt des Dreiecks
+        backgroundCtx.lineTo(0, -200); // Dritter Punkt des Dreiecks
+        backgroundCtx.closePath(); // Schließt den Pfad und führt zum ersten Punkt zurück
+        backgroundCtx.fillStyle = "grey";
+        backgroundCtx.fill();
+        backgroundCtx.restore();
+    }
+
+    function drawKiosk(_position: Vector): void {
+        backgroundCtx.save();
+        backgroundCtx.translate(_position.x, _position.y);
+        backgroundCtx.beginPath();
+        backgroundCtx.moveTo(0, 0); //1
+        backgroundCtx.lineTo(70, 0);//2
+        backgroundCtx.lineTo(70, -50); //3
+        backgroundCtx.lineTo(0, -100); //4
+        backgroundCtx.fillStyle = "brown";
+        backgroundCtx.fill();
+        backgroundCtx.closePath();
+
+        backgroundCtx.beginPath();
+        backgroundCtx.moveTo(80, -50)
+        backgroundCtx.lineTo(-10, -100);
+        backgroundCtx.lineWidth = 10;
+        backgroundCtx.strokeStyle = "red";
+        backgroundCtx.stroke();
+        backgroundCtx.closePath();
+
+        backgroundCtx.restore();
+    }
+
+    function drawTree(_position: Vector): void {
+        console.log("Tree", _position);
+        backgroundCtx.save();
+        backgroundCtx.translate(_position.x, _position.y);
+
+        backgroundCtx.beginPath();
+        backgroundCtx.fillStyle = "brown";
+        backgroundCtx.fillRect(_position.x, _position.y, 15, 100);
+        backgroundCtx.closePath();
+
+
+        backgroundCtx.beginPath();
+        backgroundCtx.arc(_position.x + 7, _position.y - 30, 40, 0, 2 * Math.PI);
+        backgroundCtx.fillStyle = "green";
+        backgroundCtx.fill();
+        backgroundCtx.closePath();
+        backgroundCtx.restore();
+    }
+
+}
+

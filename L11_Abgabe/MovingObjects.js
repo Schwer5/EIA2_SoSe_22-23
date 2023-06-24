@@ -1,6 +1,6 @@
 "use strict";
-var L102;
-(function (L102) {
+var L11_Abgabe;
+(function (L11_Abgabe) {
     class Vector {
         x;
         y;
@@ -9,10 +9,10 @@ var L102;
             this.y = y;
         }
     }
-    L102.Vector = Vector;
+    L11_Abgabe.Vector = Vector;
     class MovingObject {
-        position;
-        velocity;
+        position = new Vector(0, 0);
+        velocity = new Vector(0, 0);
         constructor(position) {
             this.position = position;
         }
@@ -23,6 +23,6 @@ var L102;
             // In Unterklassen zu implementieren
         }
     }
-    L102.MovingObject = MovingObject;
-})(L102 || (L102 = {}));
+    L11_Abgabe.MovingObject = MovingObject;
+})(L11_Abgabe || (L11_Abgabe = {}));
 //# sourceMappingURL=MovingObjects.js.map
